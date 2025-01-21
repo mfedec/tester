@@ -1,0 +1,23 @@
+name: Integration Tester
+
+volumes:
+  shared:
+
+services:
+  source:
+    build:
+      context: docker/source
+    ports:
+      - "2122:22"
+    volumes:
+      - shared:/shared
+
+  # syncer:
+  #   build:
+  #     context: docker/syncer
+  #   ports:
+  #     - "2123:22"
+  #   volumes:
+  #     - shared:/shared
+  #     - ../../:/tester
+  
