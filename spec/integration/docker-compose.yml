@@ -1,4 +1,4 @@
-name: Integration Tester
+name: "integration-test"
 
 volumes:
   shared:
