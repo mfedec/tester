@@ -1,4 +1,5 @@
 require 'socket'
+require 'open3'
 
 module DockerHelper
   SOURCE_SSH_SERVER_PORT = 2122
@@ -14,16 +15,16 @@ module DockerHelper
 
     # This doens't work, we need to capture the stdout so we can the integer value.
     # Right now this always returns true and is in an endless loop.
-    # def wait_for_healthy(timeout: 30)
-    #   timeout_at = Time.now + timeout
-    #   while compose_command("ps -a | tail -n +2 | grep -v '(healthy)' | wc -l") != 0
-    #     if timeout_at < Time.now
-    #       compose_command("ps -a | tail -n +2 | grep -v '(healthy)'")
-    #       raise "Container not healthy after #{timeout} seconds" if timeout_at < Time.now
-    #     end
-    #     sleep 0.1
-    #   end
-    # end
+    def wait_for_healthy(timeout: 30)
+      timeout_at = Time.now + timeout
+      while compose_command("ps -a | tail -n +2 | grep -v '(healthy)' | wc -l", capture: true).strip != '0'
+        if timeout_at < Time.now
+          compose_command("ps -a | tail -n +2 | grep -v '(healthy)'")
+          raise "Container not healthy after #{timeout} seconds" if timeout_at < Time.now
+        end
+        sleep 0.1
+      end
+    end
 
     def wait_for_ssh_server(retries: 3)
       Socket.tcp('localhost', SOURCE_SSH_SERVER_PORT, connect_timeout: 1).close
@@ -57,13 +58,34 @@ module DockerHelper
 
     private
 
-      def compose_command(command, echo: true)
+      def compose_command(command, echo: true, capture: false)
         puts "[docker compose] #{command}" if echo
-        succeeded = system("cd spec/integration && docker compose #{command}")
+        stdout_str = ''
+        stderr_str = ''
 
-        raise "Command `#{command}` failed with error code `#{$?}`" if !succeeded
+        Open3.popen3("cd spec/integration && docker compose #{command}") do |_, stdout, stderr, wait_thr|
+          stdout_thread = Thread.new do
+            stdout.each_line do |line|
+              puts line
+              stdout_str << line if capture
+            end
+          end
 
-        succeeded
+          stderr_thread = Thread.new do
+            stderr.each_line do |line|
+              warn line
+              stderr_str << line if capture
+            end
+          end
+
+          stdout_thread.join
+          stderr_thread.join
+
+          exit_status = wait_thr.value
+          raise stderr_str unless exit_status.success?
+        end
+
+        capture ? stdout_str : true
       end
   end
 end
