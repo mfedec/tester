@@ -9,8 +9,9 @@ RSpec.describe 'Integration Tests' do
     # Current setup tells me this doesn't wait for each container to be ready
     # once one returns ready it will move on?
 
-    # DockerHelper.wait_for_ssh_server
-    # DockerHelper.setup_syncer
+    # DockerHelper.wait_for_healthy
+    DockerHelper.wait_for_ssh_server
+    DockerHelper.setup_syncer
   end
 
   after(:all) do

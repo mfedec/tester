@@ -6,9 +6,12 @@ WORKDIR /provision
 ENV VERBOSE=true
 
 RUN apt-get update --fix-missing && \
-  apt-get -y install openssh-client openssh-server openssl
+  apt-get -y install openssh-client openssl
 
-RUN ln -s /shared/ssh/id_rsa.pub /root/.ssh/authorized_keys
+RUN mkdir ssh && \
+  ssh-keygen -t rsa -f ssh/id_rsa -N ""
+
+RUN ln -s /shared/ssh /root/.ssh
 
 COPY *.sh .
 
