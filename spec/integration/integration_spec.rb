@@ -6,9 +6,6 @@ RSpec.describe 'Integration Tests' do
   before(:all) do
     # TODO: (maybe), check to see if docker containers running? If so, destroy them
     DockerHelper.start
-    # Current setup tells me this doesn't wait for each container to be ready
-    # once one returns ready it will move on?
-
     DockerHelper.wait_for_healthy
     DockerHelper.wait_for_ssh_server
     DockerHelper.setup_syncer
@@ -20,6 +17,7 @@ RSpec.describe 'Integration Tests' do
 
   before(:each) do
     DockerHelper.setup_source
+    DockerHelper.setup_syncer
   end
 
   after(:each) do
@@ -28,7 +26,9 @@ RSpec.describe 'Integration Tests' do
 
   describe 'tester' do
     it 'syncs the directory' do
-      # DockerHelper.tester
+      DockerHelper.tester
+      expect(DockerHelper.run_check('/app')).to eq('1')
+      expect(DockerHelper.run_check('/app/tester1')).to eq('2')
     end
   end
 end

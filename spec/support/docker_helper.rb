@@ -13,8 +13,6 @@ module DockerHelper
       compose_command('down')
     end
 
-    # This doens't work, we need to capture the stdout so we can the integer value.
-    # Right now this always returns true and is in an endless loop.
     def wait_for_healthy(timeout: 30)
       timeout_at = Time.now + timeout
       while compose_command("ps -a | tail -n +2 | grep -v '(healthy)' | wc -l", capture: true).strip != '0'
@@ -53,7 +51,11 @@ module DockerHelper
 
     # This runs the command to execute the tester gem.
     def tester
-      compose_command("exec --workdir /app/app1 syncer tester")
+      compose_command("exec syncer scp -r root@source:/app/tester1/ /app/")
+    end
+
+    def run_check(directory)
+      compose_command("exec syncer ls #{directory} | wc -l", capture: true).strip
     end
 
     private

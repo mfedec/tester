@@ -1,6 +1,6 @@
 # Tester
 
-This repo is just a basic example of how to setup integration testing for your CLI apps that interact with servers.
+This repo is just a basic example / template of how to setup integration testing for your CLI apps that interact with servers.
 
 For the example, we will be writing and testing a basic cli that syncs a file between 2 servers.
 
