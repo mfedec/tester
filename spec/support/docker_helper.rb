@@ -50,7 +50,7 @@ module DockerHelper
     end
 
     # This runs the command to execute the tester gem.
-    def tester
+    def sync
       compose_command("exec syncer scp -r root@source:/app/tester1/ /app/")
     end
 

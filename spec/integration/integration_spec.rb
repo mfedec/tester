@@ -26,8 +26,15 @@ RSpec.describe 'Integration Tests' do
 
   describe 'tester' do
     it 'syncs the directory' do
-      DockerHelper.tester
+      # There are better ways to check for existence of files, this is just a simple
+      # example to interact with the docker containers.
+
+      # Run the sync command
+      DockerHelper.sync
+      # Make sure new directory exists
       expect(DockerHelper.run_check('/app')).to eq('1')
+
+      # Make sure directory has some files
       expect(DockerHelper.run_check('/app/tester1')).to eq('2')
     end
   end
