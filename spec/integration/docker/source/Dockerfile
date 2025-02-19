@@ -1,5 +1,4 @@
-# Could probably use a different image for source, doesn't need to be ruby
-FROM ruby:3.2.2
+FROM debian:bookworm-slim
 
 WORKDIR /provision
 
