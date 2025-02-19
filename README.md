@@ -6,10 +6,6 @@ For the example, we will be writing and testing a basic cli that syncs a file be
 
 The focus for this repo is not about the cli, but instead how to setup integration tests that spins up docker containers that we will use to test the actual functionality of the CLI.
 
-## Todo
-
-- Initially thought to do this as a cli, but really, could just be a basic ruby script to show how things work together. Either create a cli or remove the current cli specific things and make into a ruby script
-
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/mfedec/tester.
