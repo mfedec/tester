@@ -13,8 +13,6 @@ services:
   source:
     build:
       context: docker/source
-    ports:
-      - "2122:22"
     volumes:
       - shared:/shared
   

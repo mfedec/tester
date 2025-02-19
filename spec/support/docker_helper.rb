@@ -2,7 +2,6 @@ require 'socket'
 require 'open3'
 
 module DockerHelper
-  SOURCE_SSH_SERVER_PORT = 2122
 
   class << self
     def start
@@ -22,15 +21,6 @@ module DockerHelper
         end
         sleep 0.1
       end
-    end
-
-    def wait_for_ssh_server(retries: 3)
-      Socket.tcp('localhost', SOURCE_SSH_SERVER_PORT, connect_timeout: 1).close
-      sleep(1)
-    rescue Errno::ECONNREFUSED, Errno::ETIMEDOUT
-      retries -= 1
-      sleep(2) && retry if retries.positive?
-      raise 'SSH server did not start within container'
     end
 
     def setup_source
