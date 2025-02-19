@@ -30,7 +30,7 @@ RSpec.describe 'Integration Tests' do
       # example to interact with the docker containers.
 
       # Run the sync command
-      DockerHelper.sync
+      DockerHelper.run_tester
       # Make sure new directory exists
       expect(DockerHelper.run_check('/app')).to eq('1')
 

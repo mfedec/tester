@@ -49,9 +49,8 @@ module DockerHelper
       compose_command('exec --workdir /provision syncer ./reset.sh')
     end
 
-    # This runs the command to execute the tester gem.
-    def sync
-      compose_command("exec syncer scp -r root@source:/app/tester1/ /app/")
+    def run_tester
+      compose_command('exec syncer tester sync root@source:/app/tester1/ /app/')
     end
 
     def run_check(directory)
