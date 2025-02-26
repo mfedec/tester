@@ -7,7 +7,6 @@ RSpec.describe 'Integration Tests' do
     # TODO: (maybe), check to see if docker containers running? If so, destroy them
     DockerHelper.start
     DockerHelper.wait_for_healthy
-    DockerHelper.setup_syncer
   end
 
   after(:all) do
