@@ -20,6 +20,7 @@ RSpec.describe 'Integration Tests' do
 
   after(:each) do
     DockerHelper.reset_source
+    DockerHelper.reset_syncer
   end
 
   describe 'tester' do
