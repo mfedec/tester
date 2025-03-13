@@ -17,7 +17,7 @@ Even if you use a different testing framework or want to test a different CLI or
 
 - Update `setup.sh` in `spec/integration/docker/source` and `spec/integration/docker/source` to include any applications, files, directories, anything you need to configured before the test suite runs
 - Update `reset.sh` in `spec/integration/docker/source` and `spec/integration/docker/source` to reset the servers to a state before the test suite ran
-`bundle exec rspec`
+- `bundle exec rspec`
 
 ## Contributing
 
